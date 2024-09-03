@@ -25,12 +25,12 @@ namespace SekiburaGames.Arkanoid.System
 
         private void RegisterSystems()
         {
-          
+            SystemManager.Register<InputController>();
         }
 
         private void GetSystems()
         {
-
+            SystemManager.Get<InputController>();
         }
 
         private void SetApplicationSettings()
