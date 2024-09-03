@@ -3,9 +3,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using static SekiburaGames.Arcanoid.System.StaticData;
+using static SekiburaGames.Arkanoid.System.StaticData;
 
-namespace SekiburaGames.Arcanoid.System
+namespace SekiburaGames.Arkanoid.System
 {
     public class GameStatesManager : MonoBehaviour {
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace SekiburaGames.Arcanoid.Audio
+namespace SekiburaGames.Arkanoid.Audio
 {
     public class ButtonClickSound : MonoBehaviour
     {

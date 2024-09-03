@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SekiburaGames.Arcanoid.System
+namespace SekiburaGames.Arkanoid.System
 {
     public interface IInitializable
     {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace SekiburaGames.Arcanoid.Audio
+namespace SekiburaGames.Arkanoid.Audio
 {
     public class SoundManager : MonoBehaviour
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace SekiburaGames.Arcanoid.UI
+namespace SekiburaGames.Arkanoid.UI
 {
     public class UI_ButtonOpenerView : MonoBehaviour
     {

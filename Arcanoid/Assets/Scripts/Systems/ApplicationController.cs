@@ -4,7 +4,7 @@ using System.Diagnostics;
 using UnityEngine;
 //using UnityEngine.InputSystem;
 
-namespace SekiburaGames.Arcanoid.System
+namespace SekiburaGames.Arkanoid.System
 {
     public class ApplicationController : MonoBehaviour
     {

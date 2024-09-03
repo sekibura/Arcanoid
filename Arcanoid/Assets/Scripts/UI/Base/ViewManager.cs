@@ -4,7 +4,7 @@ using System.Data.Common;
 using Unity.VisualScripting;
 using UnityEngine;
 
-namespace SekiburaGames.Arcanoid.UI
+namespace SekiburaGames.Arkanoid.UI
 {
     public class ViewManager : MonoBehaviour
     {
