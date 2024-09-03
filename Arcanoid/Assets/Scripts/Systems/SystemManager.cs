@@ -8,6 +8,7 @@ namespace SekiburaGames.Arkanoid.System
     public interface IInitializable
     {
         void Initialize();
+        void Dispose();
     }
 
     /// <summary>
@@ -164,6 +165,12 @@ namespace SekiburaGames.Arkanoid.System
 
         public static void Dispose()
         {
+            foreach (var t in _systems)
+            {
+                IInitializable initializable = t.Value as IInitializable;
+                if (initializable != null)
+                    initializable.Dispose();
+            }
             _systems.Clear();
             _creators.Clear();
         }
