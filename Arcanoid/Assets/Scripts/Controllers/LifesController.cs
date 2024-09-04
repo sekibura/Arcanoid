@@ -3,45 +3,49 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 using static SekiburaGames.Arkanoid.System.StaticData;
+
 
 namespace SekiburaGames.Arkanoid.Gameplay
 {
-    public class ScoreController : IInitializable
-    { 
+    public class LifesController : IInitializable
+    {
+        [SerializeField]
+        private int _defaultLifesValue;
 
         #region props
-        private double _score;
-        public double Score
+        private int _lifes;
+        public int Lifes
         {
             get
             {
-                return _score;
+                return _lifes;
             }
             private set
             {
-                _score = value;
-                ScoreUpdatedEvent?.Invoke(Score);
+                _lifes = value;
+                LifesUpdatedEvent?.Invoke(Lifes);
             }
         }
         #endregion
 
-        public event Action<double> ScoreUpdatedEvent;
+        public event Action<int> LifesUpdatedEvent;
         public void Initialize()
         {
-            ResetScoreValue();
+            ResetLifesValue();
             GameStatesManager.Instance.GameStateChanged.AddListener(GameStateUpdated);
         }
 
-        public bool UpdateScore(double delta)
+        public bool UpdateLifes(int delta)
         {
-            if (Score + delta < 0)
+            if (Lifes + delta < 0)
                 return false;
 
-            Score = Score + delta > 0 ? Score + delta : 0;
+            Lifes = Lifes + delta > 0 ? Lifes + delta : 0;
 
             if (delta != 0)
-                ScoreUpdatedEvent?.Invoke(Score);
+                LifesUpdatedEvent?.Invoke(Lifes);
 
             return true;
         }
@@ -53,7 +57,7 @@ namespace SekiburaGames.Arkanoid.Gameplay
                 case AvailableGameStates.Menu:
                     break;
                 case AvailableGameStates.Starting:
-                    ResetScoreValue();
+                    ResetLifesValue();
                     break;
                 case AvailableGameStates.Playing:
                     break;
@@ -68,10 +72,10 @@ namespace SekiburaGames.Arkanoid.Gameplay
             }
         }
 
-        private void ResetScoreValue()
+        private void ResetLifesValue()
         {
-            Debug.Log($"[ScoreController]: ResetScoreValue!");
-            Score = 0;
+            Debug.Log($"[LifesController]: ResetLifesValue!");
+            Lifes = _defaultLifesValue;
         }
 
         public void Dispose()
