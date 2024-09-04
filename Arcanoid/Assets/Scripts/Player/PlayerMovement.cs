@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static SekiburaGames.Arkanoid.System.StaticData;
 
 namespace SekiburaGames.Arkanoid.Gameplay
 {
@@ -21,12 +22,16 @@ namespace SekiburaGames.Arkanoid.Gameplay
         private InputController _inputController;
         private float _inputValue;
 
+        [SerializeField]
+        private Vector3 _defaultPlayerPosition;
+
         private void Start()
         {
             SystemManager.Get(out _inputController);
             
             _inputController.PlayerMovePerformed += (value) => _inputValue = value;
             _inputController.PlayerMoveCanceled += () => _inputValue = 0;
+            GameStatesManager.Instance.GameStateChanged.AddListener(GameStateUpdated);
         }
 
         private void Update()
@@ -42,6 +47,34 @@ namespace SekiburaGames.Arkanoid.Gameplay
             {
                 gameObject.transform.Translate(new Vector3(_inputValue, 0, 0) * PlayerStats.PlayerSpeed * Time.deltaTime);
             }
+        }
+
+        private void GameStateUpdated()
+        {
+            switch (GameStatesManager.gameState)
+            {
+                case AvailableGameStates.Menu:
+                    break;
+                case AvailableGameStates.Starting:
+                    ResetPlayerPosition();
+                    break;
+                case AvailableGameStates.Playing:
+                    break;
+                case AvailableGameStates.Tutorial:
+                    break;
+                case AvailableGameStates.Pausing:
+                    break;
+                case AvailableGameStates.Ending:
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void ResetPlayerPosition()
+        {
+            Debug.Log($"[PlayerMovement]: ResetPlayerPosition!");
+            _playerGO.transform.position = _defaultPlayerPosition;
         }
     }
 }
