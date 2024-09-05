@@ -36,7 +36,7 @@ namespace SekiburaGames.Arkanoid.Gameplay
 
         private void Update()
         {
-            if (GameStatesManager.gameState != StaticData.AvailableGameStates.Playing)
+            if ((GameStatesManager.gameState != StaticData.AvailableGameStates.Playing) && (GameStatesManager.gameState != StaticData.AvailableGameStates.Starting))
                 return;
             if (((_playerGO.transform.position.x + _playerRender.bounds.size.x/2) >= (_rightBound.transform.position.x - _rightBound.bounds.size.x/2)) && _inputValue > 0)
                 return;
