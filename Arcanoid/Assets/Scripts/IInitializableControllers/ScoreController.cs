@@ -11,8 +11,8 @@ namespace SekiburaGames.Arkanoid.Gameplay
     { 
 
         #region props
-        private double _score;
-        public double Score
+        private int _score;
+        public int Score
         {
             get
             {
@@ -26,14 +26,14 @@ namespace SekiburaGames.Arkanoid.Gameplay
         }
         #endregion
 
-        public event Action<double> ScoreUpdatedEvent;
+        public event Action<int> ScoreUpdatedEvent;
         public void Initialize()
         {
             ResetScoreValue();
             GameStatesManager.Instance.GameStateChanged.AddListener(GameStateUpdated);
         }
 
-        public bool UpdateScore(double delta)
+        public bool UpdateScore(int delta)
         {
             if (Score + delta < 0)
                 return false;

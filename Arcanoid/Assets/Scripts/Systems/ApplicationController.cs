@@ -1,3 +1,4 @@
+using SekiburaGames.Arkanoid.Gameplay;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,11 +27,15 @@ namespace SekiburaGames.Arkanoid.System
         private void RegisterSystems()
         {
             SystemManager.Register<InputController>();
+            SystemManager.Register<ScoreController>();
+            SystemManager.Register<LifesController>();
         }
 
         private void GetSystems()
         {
             SystemManager.Get<InputController>();
+            SystemManager.Get<ScoreController>();
+            SystemManager.Get<LifesController>();
         }
 
         private void SetApplicationSettings()

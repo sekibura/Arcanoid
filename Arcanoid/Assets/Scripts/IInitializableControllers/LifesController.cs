@@ -5,14 +5,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 using static SekiburaGames.Arkanoid.System.StaticData;
+using static SekiburaGames.Arkanoid.System.TimersController;
 
 
 namespace SekiburaGames.Arkanoid.Gameplay
 {
-    public class LifesController : IInitializable
+    /// <summary>
+    /// Максимум 3 жизни
+    /// </summary>
+    public class LifesController : System.IInitializable
     {
-        [SerializeField]
-        private int _defaultLifesValue;
+        private int _defaultLifesValue = 3;
 
         #region props
         private int _lifes;
@@ -35,6 +38,7 @@ namespace SekiburaGames.Arkanoid.Gameplay
         {
             ResetLifesValue();
             GameStatesManager.Instance.GameStateChanged.AddListener(GameStateUpdated);
+            //TestValue();
         }
 
         public bool UpdateLifes(int delta)
@@ -43,9 +47,6 @@ namespace SekiburaGames.Arkanoid.Gameplay
                 return false;
 
             Lifes = Lifes + delta > 0 ? Lifes + delta : 0;
-
-            if (delta != 0)
-                LifesUpdatedEvent?.Invoke(Lifes);
 
             return true;
         }
@@ -81,6 +82,18 @@ namespace SekiburaGames.Arkanoid.Gameplay
         public void Dispose()
         {
             //SaveProgress();
+        }
+
+        private void TestValue()
+        {
+            TimerData timer = TimersController.Instance.StartTimer(() => TestUpdateLifes(), 1, true);
+        }
+
+        private void TestUpdateLifes()
+        {            
+            int newValue = Lifes - 1 < 0 ? 3 : Lifes - 1;
+            Debug.Log("Tick " + newValue);
+            Lifes = newValue;
         }
     }
 }
