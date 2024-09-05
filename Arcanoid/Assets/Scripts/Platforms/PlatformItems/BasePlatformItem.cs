@@ -1,3 +1,4 @@
+using SekiburaGames.Arkanoid.System;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +10,8 @@ namespace SekiburaGames.Arkanoid.Gameplay
     {
         [SerializeField]
         private int _health = 1;
+        [SerializeField]
+        private int _score = 1;
 
         public List<string> Names { get; set; }
         public List<ItemParameter> DefaultParametersList { get; set; }
@@ -16,8 +19,10 @@ namespace SekiburaGames.Arkanoid.Gameplay
         public Action<int> PlatformHitsUpdated;
         public Action<int> PlatformGetDamage;
 
+        private ScoreController _scoreController;
         public virtual void ApplyDamage(int damage) 
         {
+            SystemManager.Get(out _scoreController);
             _health = _health - damage < 0 ? 0 : _health - damage;
             if (_health <= 0)
                 DestroyPlatform();
@@ -28,6 +33,7 @@ namespace SekiburaGames.Arkanoid.Gameplay
         protected virtual void DestroyPlatform()
         {
             Debug.Log($"[Platform {gameObject.name}] - Was destroyed!");
+            _scoreController.UpdateScore(_score);
             gameObject.SetActive(false);
         }
     }
