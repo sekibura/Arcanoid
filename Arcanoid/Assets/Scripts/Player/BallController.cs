@@ -1,6 +1,7 @@
 using SekiburaGames.Arkanoid.System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using static SekiburaGames.Arkanoid.System.StaticData;
 
@@ -10,17 +11,22 @@ namespace SekiburaGames.Arkanoid.Gameplay
     {
         [SerializeField]
         private int _damage = 1;
+        [SerializeField]
+        private float _pushForce = 1000;
 
         [SerializeField]
         private Rigidbody2D _rigidbody2D;
 
         private GameObject _playerGameObject;
         private Renderer _playerRenderer;
+        private GameStateMachine _stateMachine;
+        private Vector3 _collPos;
 
         void Start()
         {
             InitPlayerFields();
-            GameStatesManager.Instance.GameStateChanged.AddListener(GameStateUpdated);
+            SystemManager.Get(out _stateMachine);
+            _stateMachine.GameStateChangedEvent += GameStateUpdated;
             ResetBallState();
         }
 
@@ -37,40 +43,91 @@ namespace SekiburaGames.Arkanoid.Gameplay
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (!collision.transform.CompareTag("Platform"))
-                return;
+            //Debug.Log($"[BallController]: {collision.transform.tag.ToString()}");
+            if (collision.transform.CompareTag("Platform"))
+            {
 
-            var platform = collision.gameObject.GetComponent<BasePlatformItem>();
-            if (platform != null)
-                platform.ApplyDamage(_damage);
+                var platform = collision.gameObject.GetComponent<BasePlatformItem>();
+                if (platform != null)
+                    platform.ApplyDamage(_damage);
+            }
+            else if (collision.transform.CompareTag("Player"))
+            {
+                Vector2 newVelocity = RecalcBallVelocity(collision.GetContact(0).point);
+                _collPos = collision.GetContact(0).point;
+                _rigidbody2D.velocity = newVelocity;
+            }
+
         }
 
-        private void GameStateUpdated()
+        //ѕлатформа поделена на 3 части:
+        //перва€ лева€ - отбрасывает м€чик влево
+        //средн€€ - не измен€ет отскок
+        //права€ - отбрасывает вправо
+        private Vector2 RecalcBallVelocity(Vector3 collisionPosition)
         {
-            switch (GameStatesManager.gameState)
+            Vector2 newVelocity = Vector3.zero;
+            float leftPointX = _playerRenderer.gameObject.transform.position.x - _playerRenderer.bounds.size.x / 2;
+            if(collisionPosition.x > leftPointX + ((_playerRenderer.bounds.size.x/3)*2))
             {
-                case AvailableGameStates.Menu:
-                    break;
-                case AvailableGameStates.Starting:
-                    ResetBallState();
-                    break;
-                case AvailableGameStates.Playing:
-                    break;
-                case AvailableGameStates.Tutorial:
-                    break;
-                case AvailableGameStates.Pausing:
-                    break;
-                case AvailableGameStates.Ending:
-                    break;
-                default:
-                    break;
+                //права€ часть
+                Debug.Log("[BallController]: ѕрава€ часть");
+                newVelocity = new Vector2(_rigidbody2D.velocity.x < 0 ? -_rigidbody2D.velocity.x : _rigidbody2D.velocity.x, _rigidbody2D.velocity.y);
+            }
+            else if(collisionPosition.x > leftPointX + (_playerRenderer.bounds.size.x / 3))
+            {
+                //средн€€ часть
+                Debug.Log("[BallController]: —редн€€ часть");
+                newVelocity = _rigidbody2D.velocity;
+            }
+            else if(collisionPosition.x > leftPointX)
+            {
+                //лева часть
+                Debug.Log("[BallController]: Ћева€ часть");
+                newVelocity = new Vector2(_rigidbody2D.velocity.x > 0 ? -_rigidbody2D.velocity.x : _rigidbody2D.velocity.x, _rigidbody2D.velocity.y);
+            }
+
+            Debug.Log($"[BallController]: {collisionPosition.x} {leftPointX} {(_playerRenderer.bounds.size.x / 3)} {(_playerRenderer.bounds.size.x / 3)*2} {leftPointX + ((_playerRenderer.bounds.size.x / 3) * 2)}");
+            return newVelocity;
+        }
+
+        //private void OnDrawGizmos()
+        //{
+        //    float leftPointX = _playerRenderer.gameObject.transform.position.x - _playerRenderer.bounds.size.x / 2;
+        //    float leftPointy = _playerRenderer.gameObject.transform.position.y + _playerRenderer.bounds.size.y / 2;
+        //    Gizmos.color = Color.yellow;
+        //    Gizmos.DrawSphere(new Vector3(leftPointX, leftPointy, 0), 0.1f);
+        //    Gizmos.color = Color.green;
+        //    Gizmos.DrawSphere(new Vector3(leftPointX + (_playerRenderer.bounds.size.x / 3), leftPointy, 0), 0.1f);
+        //    Gizmos.color = Color.red;
+        //    Gizmos.DrawSphere(new Vector3(leftPointX + (_playerRenderer.bounds.size.x / 3) * 2, leftPointy, 0), 0.1f);
+        //    Gizmos.color = Color.blue;
+        //    Gizmos.DrawSphere(new Vector3(leftPointX + (_playerRenderer.bounds.size.x / 3) * 3, leftPointy, 0), 0.1f);
+        //    Gizmos.color = Color.black;
+        //    Gizmos.DrawSphere(_collPos, 0.1f);
+        //}
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.transform.CompareTag("GameOverBound"))
+            {
+                _stateMachine.ChangeState(new GameOverZoneState(_stateMachine));
             }
         }
 
-        private void ResetBallState()
+        private void GameStateUpdated(GameState gameState)
+        {
+            if (_stateMachine.IsCurrentState<GameplayState>() && _stateMachine.IsLastState<ResetState>())
+            {
+                PushBall();
+            }
+        }
+
+        public void ResetBallState()
         {
             Debug.Log($"[BallController]: ResetBallState!");
             BallToStart();
+            _rigidbody2D.velocity = Vector3.zero;
         }
 
         private void BallToStart()
@@ -80,8 +137,15 @@ namespace SekiburaGames.Arkanoid.Gameplay
 
             gameObject.transform.parent = _playerGameObject.transform;
             gameObject.transform.localPosition= new Vector3(0, _playerRenderer.bounds.size.y/2, 0);
-            //gameObject.transform.localPosition = new Vector3(0, 0, 0);
         }
+
+        public void PushBall()
+        {
+            Debug.Log($"[BallController]: PushBall!");
+            gameObject.transform.parent = null;
+            _rigidbody2D.AddForce(new Vector2(20, 20) * _pushForce);
+        }
+
 
     }
 }
