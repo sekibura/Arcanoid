@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4366330755208492436}
   m_Layer: 0
   m_Name: PlatformDefault
-  m_TagString: Untagged
+  m_TagString: Platform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -172,3 +172,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _health: 1
+  _score: 1

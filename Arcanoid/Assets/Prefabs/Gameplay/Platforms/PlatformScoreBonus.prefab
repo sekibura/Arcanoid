@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7133901762919825139}
   m_Layer: 0
   m_Name: PlatformScoreBonus
-  m_TagString: Untagged
+  m_TagString: Platform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5999263090743508969}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.29, y: 6.9232774, z: 0.014686949}
   m_LocalScale: {x: 2.6666, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -172,6 +172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _health: 5
+  _score: 1
   modifiersData:
   - Modifier: {fileID: 11400000, guid: 8c5c30b5452af73408eddea80ef5ff09, type: 2}
     value: 100

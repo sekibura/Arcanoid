@@ -19,6 +19,12 @@ namespace SekiburaGames.Arkanoid.Gameplay
             }
             return true;
         }
+
+        protected override void DestroyPlatform()
+        {
+            base.DestroyPlatform();
+            PerformAction();
+        }
     }
     public interface IItemAction
     {
