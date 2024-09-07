@@ -14,12 +14,19 @@ namespace SekiburaGames.Arkanoid.System
         public Action<float> PlayerMovePerformed;
         public Action PlayerMoveCanceled;
 
+        public Action PlayGamePerformed;
+        public Action PlayGameCanceled;
+
+
         public void Initialize()
         {
             _playerInputActions = new InputActions();
             _playerInputActions.Enable();
             _playerInputActions.Player.Move.performed += (e => PlayerMovePerformed?.Invoke(e.ReadValue<float>()));
             _playerInputActions.Player.Move.canceled += (CheckMove) => PlayerMoveCanceled?.Invoke();
+
+            _playerInputActions.Player.StartGame.performed += (e) => PlayGamePerformed?.Invoke();
+            _playerInputActions.Player.StartGame.canceled += (e) => PlayGameCanceled?.Invoke();
             
         }
 
