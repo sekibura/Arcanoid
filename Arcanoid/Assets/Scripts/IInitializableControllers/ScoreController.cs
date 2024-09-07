@@ -30,7 +30,6 @@ namespace SekiburaGames.Arkanoid.Gameplay
         public void Initialize()
         {
             ResetScoreValue();
-            GameStatesManager.Instance.GameStateChanged.AddListener(GameStateUpdated);
         }
 
         public bool UpdateScore(int delta)
@@ -46,29 +45,7 @@ namespace SekiburaGames.Arkanoid.Gameplay
             return true;
         }
 
-        private void GameStateUpdated()
-        {
-            switch (GameStatesManager.gameState)
-            {
-                case AvailableGameStates.Menu:
-                    break;
-                case AvailableGameStates.Starting:
-                    ResetScoreValue();
-                    break;
-                case AvailableGameStates.Playing:
-                    break;
-                case AvailableGameStates.Tutorial:
-                    break;
-                case AvailableGameStates.Pausing:
-                    break;
-                case AvailableGameStates.Ending:
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        private void ResetScoreValue()
+        public void ResetScoreValue()
         {
             Debug.Log($"[ScoreController]: ResetScoreValue!");
             Score = 0;

@@ -25,18 +25,21 @@ namespace SekiburaGames.Arkanoid.Gameplay
         [SerializeField]
         private Vector3 _defaultPlayerPosition;
 
+        private GameStateMachine _gameStateMachine;
+
         private void Start()
         {
             SystemManager.Get(out _inputController);
             
             _inputController.PlayerMovePerformed += (value) => _inputValue = value;
             _inputController.PlayerMoveCanceled += () => _inputValue = 0;
-            GameStatesManager.Instance.GameStateChanged.AddListener(GameStateUpdated);
+            //GameStatesManager.Instance.GameStateChanged.AddListener(GameStateUpdated);
+            SystemManager.Get(out _gameStateMachine);
         }
 
         private void Update()
         {
-            if ((GameStatesManager.gameState != StaticData.AvailableGameStates.Playing) && (GameStatesManager.gameState != StaticData.AvailableGameStates.Starting))
+            if (!(_gameStateMachine.IsCurrentState<GameplayState>()) && !(_gameStateMachine.IsCurrentState<ResetState>()))
                 return;
             if (((_playerGO.transform.position.x + _playerRender.bounds.size.x/2) >= (_rightBound.transform.position.x - _rightBound.bounds.size.x/2)) && _inputValue > 0)
                 return;
@@ -49,29 +52,7 @@ namespace SekiburaGames.Arkanoid.Gameplay
             }
         }
 
-        private void GameStateUpdated()
-        {
-            switch (GameStatesManager.gameState)
-            {
-                case AvailableGameStates.Menu:
-                    break;
-                case AvailableGameStates.Starting:
-                    ResetPlayerPosition();
-                    break;
-                case AvailableGameStates.Playing:
-                    break;
-                case AvailableGameStates.Tutorial:
-                    break;
-                case AvailableGameStates.Pausing:
-                    break;
-                case AvailableGameStates.Ending:
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        private void ResetPlayerPosition()
+        public void ResetPlayerPosition()
         {
             Debug.Log($"[PlayerMovement]: ResetPlayerPosition!");
             _playerGO.transform.position = _defaultPlayerPosition;

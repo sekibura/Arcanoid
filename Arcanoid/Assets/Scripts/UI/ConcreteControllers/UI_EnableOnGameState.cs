@@ -9,41 +9,49 @@ namespace SekiburaGames.Arkanoid.UI
     public class UI_EnableOnGameState : MonoBehaviour
     {
         [SerializeField]
-        private AvailableGameStates _gameState;
+        private GameStates _gameState;
 
         [SerializeField]
         private bool _invert;
 
+        private GameStateMachine _gameStateMachine;
+
         private void Start()
         {
-            GameStatesManager.Instance.GameStateChanged.AddListener(GameStateUpdated);
+            SystemManager.Get(out _gameStateMachine);
+            _gameStateMachine.GameStateChangedEvent += GameStateUpdated;
         }
 
-        private void GameStateUpdated()
+        private void GameStateUpdated(GameState gameState)
         {
-            if(_invert)
-                    gameObject.SetActive(GameStatesManager.gameState != _gameState);
-            else
-                gameObject.SetActive(GameStatesManager.gameState == _gameState);
-
-            //switch (GameStatesManager.gameState)
-            //{
-            //    case AvailableGameStates.Menu:
-            //        break;
-            //    case AvailableGameStates.Starting:
-            //        break;
-            //    case AvailableGameStates.Playing:
-            //        break;
-            //    case AvailableGameStates.Tutorial:
-            //        break;
-            //    case AvailableGameStates.Pausing:
-            //        break;
-            //    case AvailableGameStates.Ending:
-            //        break;
-            //    default:
-            //        break;
-            //}
+            switch (_gameState)
+            {
+                case GameStates.ResetState:
+                    {
+                        if (_invert)
+                            gameObject.SetActive(!_gameStateMachine.IsCurrentState<ResetState>());
+                        else
+                            gameObject.SetActive(_gameStateMachine.IsCurrentState<ResetState>());
+                    }
+                    break;
+                case GameStates.GameplayState:
+                    {
+                        if (_invert)
+                            gameObject.SetActive(!_gameStateMachine.IsCurrentState<GameplayState>());
+                        else
+                            gameObject.SetActive(_gameStateMachine.IsCurrentState<GameplayState>());
+                    }
+                    break;
+                default:
+                    gameObject.SetActive(false);
+                    break;
+            }
         }
 
+        private enum GameStates
+        {
+            ResetState,
+            GameplayState
+        }
     }
 }

@@ -37,7 +37,8 @@ namespace SekiburaGames.Arkanoid.Gameplay
         public void Initialize()
         {
             ResetLifesValue();
-            GameStatesManager.Instance.GameStateChanged.AddListener(GameStateUpdated);
+            //GameStatesManager.Instance.GameStateChanged.AddListener(GameStateUpdated);
+            //GameStateMachine.Instance.GameStateChangedEvent += GameStateUpdated;
             //TestValue();
         }
 
@@ -51,29 +52,29 @@ namespace SekiburaGames.Arkanoid.Gameplay
             return true;
         }
 
-        private void GameStateUpdated()
-        {
-            switch (GameStatesManager.gameState)
-            {
-                case AvailableGameStates.Menu:
-                    break;
-                case AvailableGameStates.Starting:
-                    ResetLifesValue();
-                    break;
-                case AvailableGameStates.Playing:
-                    break;
-                case AvailableGameStates.Tutorial:
-                    break;
-                case AvailableGameStates.Pausing:
-                    break;
-                case AvailableGameStates.Ending:
-                    break;
-                default:
-                    break;
-            }
-        }
+        //private void GameStateUpdated(GameState newGameState)
+        //{
+        //    //switch (GameStatesManager.gameState)
+        //    //{
+        //    //    case AvailableGameStates.Menu:
+        //    //        break;
+        //    //    case AvailableGameStates.Starting:
+        //    //        ResetLifesValue();
+        //    //        break;
+        //    //    case AvailableGameStates.Playing:
+        //    //        break;
+        //    //    case AvailableGameStates.Tutorial:
+        //    //        break;
+        //    //    case AvailableGameStates.Pausing:
+        //    //        break;
+        //    //    case AvailableGameStates.Ending:
+        //    //        break;
+        //    //    default:
+        //    //        break;
+        //    //}
+        //}
 
-        private void ResetLifesValue()
+        public void ResetLifesValue()
         {
             Debug.Log($"[LifesController]: ResetLifesValue!");
             Lifes = _defaultLifesValue;
