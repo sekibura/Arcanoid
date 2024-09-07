@@ -26,6 +26,7 @@ namespace SekiburaGames.Arkanoid.System
 
         private void RegisterSystems()
         {
+            SystemManager.Register<GameStateMachine>();
             SystemManager.Register<InputController>();
             SystemManager.Register<ScoreController>();
             SystemManager.Register<LifesController>();
@@ -33,6 +34,7 @@ namespace SekiburaGames.Arkanoid.System
 
         private void GetSystems()
         {
+            SystemManager.Get<GameStateMachine>();
             SystemManager.Get<InputController>();
             SystemManager.Get<ScoreController>();
             SystemManager.Get<LifesController>();
