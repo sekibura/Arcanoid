@@ -1,3 +1,4 @@
+using SekiburaGames.Arkanoid.Audio;
 using SekiburaGames.Arkanoid.System;
 using System.Collections;
 using System.Collections.Generic;
@@ -50,12 +51,18 @@ namespace SekiburaGames.Arkanoid.Gameplay
                 var platform = collision.gameObject.GetComponent<BasePlatformItem>();
                 if (platform != null)
                     platform.ApplyDamage(_damage);
+                SoundManager.instance.PlaySound(SoundManager.Sound.Hurt);
             }
             else if (collision.transform.CompareTag("Player"))
             {
                 Vector2 newVelocity = RecalcBallVelocity(collision.GetContact(0).point);
                 _collPos = collision.GetContact(0).point;
                 _rigidbody2D.velocity = newVelocity;
+                SoundManager.instance.PlaySound(SoundManager.Sound.Jump);
+            }
+            else
+            {
+                SoundManager.instance.PlaySound(SoundManager.Sound.Tap);
             }
 
         }
@@ -112,6 +119,7 @@ namespace SekiburaGames.Arkanoid.Gameplay
             if (collision.transform.CompareTag("GameOverBound"))
             {
                 _stateMachine.ChangeState(new GameOverZoneState(_stateMachine));
+                SoundManager.instance.PlaySound(SoundManager.Sound.Explosion);
             }
         }
 

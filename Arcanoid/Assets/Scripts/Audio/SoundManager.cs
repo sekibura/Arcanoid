@@ -16,7 +16,13 @@ namespace SekiburaGames.Arkanoid.Audio
         public enum Sound
         {
             None,
-            Click
+            Click,
+            Coin,
+            Explosion,
+            Hurt,
+            Jump,
+            PowerUp,
+            Tap
         }
 
         void Start()
