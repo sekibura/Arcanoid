@@ -15,7 +15,7 @@ namespace SekiburaGames.Arkanoid.Gameplay
     /// </summary>
     public class LifesController : System.IInitializable
     {
-        private int _defaultLifesValue = 3;
+        private int _defaultLifesValue = 5;
 
         #region props
         private int _lifes;

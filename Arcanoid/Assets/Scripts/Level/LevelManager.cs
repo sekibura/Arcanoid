@@ -1,4 +1,5 @@
 using SekiburaGames.Arkanoid.System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Resources;
@@ -25,14 +26,31 @@ namespace SekiburaGames.Arkanoid.Gameplay
         [SerializeField]
         private Renderer _rightBound;
 
+        public int CurrentLvl { get; private set; }
+
         void Start()
         {
             SystemManager.Get(out _gameStateMachine);
             ResetBounds();
         }
 
+        public bool IsNextLevelExist()
+        {
+            return (CurrentLvl + 1) < ScriptablObjectController.Instance.GetLevelsData().Levels.Length;
+        }
+
+        public void LoadNextLvl()
+        {
+            if (IsNextLevelExist())
+            {
+                LoadLevel(CurrentLvl+1);
+                BuildLevel();
+            }
+        }
+
         public void LoadLevel(int index)
         {
+            CurrentLvl = index;
             levelMatrix = ScriptablObjectController.Instance.GetLevelsData().GetLevel(index);
             rows = levelMatrix.GetLength(0);
             cols = levelMatrix.GetLength(1);
@@ -84,6 +102,7 @@ namespace SekiburaGames.Arkanoid.Gameplay
 
         private void PlatformDestroyed(BasePlatformItem item)
         {
+            Destroy(item);
             _platformItems.Remove(item);
             if(_platformItems.Count == 0)
             {

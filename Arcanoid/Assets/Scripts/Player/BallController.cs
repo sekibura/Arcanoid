@@ -71,7 +71,7 @@ namespace SekiburaGames.Arkanoid.Gameplay
 
         private void CheckVelocity()
         {
-            if (Mathf.Abs(_rigidbody2D.velocity.y) < 5)
+            if (Mathf.Abs(_rigidbody2D.velocity.y) < 1)
             {
                 _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, _rigidbody2D.velocity.y * 2);
             }
