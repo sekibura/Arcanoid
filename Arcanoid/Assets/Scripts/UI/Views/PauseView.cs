@@ -40,7 +40,7 @@ namespace SekiburaGames.Arkanoid.UI
             _sliderEffects.onValueChanged.AddListener((value) => OnSoundEffectsSliderChange(value));
             _sliderMusic.onValueChanged.AddListener((value) => OnMusicSliderChange(value));
             _helpBtn.onClick.AddListener(() => _helpView.SetActive(true));
-            _mainMenuScene.onClick.AddListener(() => SceneManager.LoadScene("MainMenuScene"));
+            _mainMenuScene.onClick.AddListener(() => _gameStateMachine.ChangeState(new MainMenuState(_gameStateMachine)));
             _resumeBtn.onClick.AddListener(() => OnResumeButtonPressed());
         }
 
@@ -61,22 +61,26 @@ namespace SekiburaGames.Arkanoid.UI
 
         private void OnSoundEffectsSliderChange(float value)
         {
-            if (_isSetSliderValues)
-                return;
+            //if (_isSetSliderValues)
+            //    return;
+            Debug.Log($"OnSoundEffectsSliderChange {value}");
             _audioMixer.audioMixer.SetFloat("Effects", Mathf.Log10(value) * 20);
         }
 
         private void OnMusicSliderChange(float value)
         {
-            if (_isSetSliderValues)
-                return;
+            //if (_isSetSliderValues)
+            //    return;
             _audioMixer.audioMixer.SetFloat("BackgroundMusic", Mathf.Log10(value) * 20);
         }
 
         private void OnResumeButtonPressed()
         {
-            ViewManager.Show<GameplayView>();
-            _gameStateMachine.ChangeState(new GameplayState(_gameStateMachine));
+//            ViewManager.Show<GameplayView>();
+            //_gameStateMachine.ChangeState(new GameplayState(_gameStateMachine));
+            //var lastState = _gameStateMachine.LastState;
+            _gameStateMachine.ChangeState(_gameStateMachine.LastState);
+
         }
     }
 }

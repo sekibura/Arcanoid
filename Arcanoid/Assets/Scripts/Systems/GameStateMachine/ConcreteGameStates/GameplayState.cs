@@ -1,4 +1,5 @@
 using SekiburaGames.Arkanoid.Gameplay;
+using SekiburaGames.Arkanoid.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -19,7 +20,8 @@ namespace SekiburaGames.Arkanoid.System
         public override void Enter()
         {
             //Debug.Log("Entered Gameplay State");
-            if(_gameStateMachine.IsLastState<PauseState>())
+            ViewManager.Show<GameplayView>();
+            if (_gameStateMachine.IsLastState<PauseState>())
                 _ballController.ContinueMovement();
         }
 

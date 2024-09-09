@@ -2,7 +2,6 @@ using SekiburaGames.Arkanoid.System;
 using SekiburaGames.Arkanoid.UI;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Tilemaps;
 using UnityEngine;
 
 namespace SekiburaGames.Arkanoid.System

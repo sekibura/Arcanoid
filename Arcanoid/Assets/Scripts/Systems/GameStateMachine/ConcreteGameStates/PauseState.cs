@@ -1,4 +1,5 @@
 using SekiburaGames.Arkanoid.Gameplay;
+using SekiburaGames.Arkanoid.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,7 @@ namespace SekiburaGames.Arkanoid.System
         public override void Enter()
         {
             base.Enter();
+            ViewManager.Show<PauseView>();
             _ballController.StopMovement();
         }
     }

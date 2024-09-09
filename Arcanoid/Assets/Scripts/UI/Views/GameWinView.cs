@@ -21,7 +21,7 @@ namespace SekiburaGames.Arkanoid.UI
             base.Initialize();
             SystemManager.Get(out _gameStateMachine);
             _restartBtn.onClick.AddListener(() =>_gameStateMachine.ChangeState(new ResetState(_gameStateMachine)));
-            _nextLvlBtn.onClick.AddListener(() => _gameStateMachine.ChangeState(new ResetState(_gameStateMachine)));
+            _nextLvlBtn.onClick.AddListener(() => _gameStateMachine.ChangeState(new MainMenuState(_gameStateMachine)));
         }
     }
 }

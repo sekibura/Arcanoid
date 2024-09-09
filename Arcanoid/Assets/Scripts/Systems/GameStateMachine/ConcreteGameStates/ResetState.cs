@@ -33,7 +33,7 @@ namespace SekiburaGames.Arkanoid.System
             _inputController.PlayGamePerformed += PlayGameButtonPressed;
 
 
-            if(_lifesController.Lifes <= 0 || _gameStateMachine.IsLastState<YouWinState>())
+            if(_lifesController.Lifes <= 0 || _gameStateMachine.IsLastState<YouWinState>() || _gameStateMachine.IsLastState<MainMenuState>())
             {
                 _scoreController.ResetScoreValue();
                 _lifesController.ResetLifesValue();

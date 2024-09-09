@@ -28,6 +28,8 @@ namespace SekiburaGames.Arkanoid.System
             GameStateChangedEvent?.Invoke(CurrentState);
         }
 
+
+
         public void UpdateState()
         {
             if (CurrentState != null)

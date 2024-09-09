@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2749360224842215693}
   - component: {fileID: 7133901762919825139}
   m_Layer: 0
-  m_Name: PlatformScoreBonus
+  m_Name: PlatformScoreBonus2
   m_TagString: Platform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.24785912, g: 1, b: 0, a: 1}
+  m_Color: {r: 0.9146024, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -171,8 +171,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac92b7d27419f6e41b778d51aa62b931, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 2
+  _health: 3
   _score: 1
   modifiersData:
   - Modifier: {fileID: 11400000, guid: 8c5c30b5452af73408eddea80ef5ff09, type: 2}
-    value: 10
+    value: 30

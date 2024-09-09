@@ -1,4 +1,5 @@
 using SekiburaGames.Arkanoid.Gameplay;
+using SekiburaGames.Arkanoid.Gameplay.SekiburaGames.Arkanoid.Gameplay;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,23 +42,10 @@ namespace SekiburaGames.Arkanoid.System
 
         #region Platforms
         [SerializeField]
-        protected PlatformItemsSO _platformsData;
-        [SerializeField]
-        protected List<BasePlatformItem> _inventoryItems;
-        public PlatformItemsSO GetInventoryData()
+        protected LevelsSO _levels;
+        public LevelsSO GetLevelsData()
         {
-            return _platformsData;
-        }
-        public BasePlatformItem GetItemByName(string name)
-        {
-            BasePlatformItem value = _inventoryItems.Find(x => x.Names.Any(s => s == name));
-            if (value != null)
-                return value;
-            else
-            {
-                Debug.LogError($"[ScriptablObjectController]: There is no object with name: {name} ");
-                return null;
-            }
+            return _levels;
         }
         #endregion
     }

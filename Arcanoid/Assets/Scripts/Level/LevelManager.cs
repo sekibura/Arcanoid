@@ -1,6 +1,7 @@
 using SekiburaGames.Arkanoid.System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Resources;
 using UnityEngine;
 
 namespace SekiburaGames.Arkanoid.Gameplay
@@ -12,12 +13,7 @@ namespace SekiburaGames.Arkanoid.Gameplay
         private List<BasePlatformItem> _platformItems = new List<BasePlatformItem>();
         private GameStateMachine _gameStateMachine;
 
-        private int[,] levelMatrix = new int[,]
-        {
-        { 1, 1, 0, 1 },
-        { 0, 1, 1, 0 },
-        { 1, 0, 1, 1 }
-        };
+        private int[,] levelMatrix;
 
         private int rows;
         private int cols;
@@ -27,9 +23,19 @@ namespace SekiburaGames.Arkanoid.Gameplay
         void Start()
         {
             SystemManager.Get(out _gameStateMachine);
+        }
+
+        public void LoadLevel(int index)
+        {
+            levelMatrix = ScriptablObjectController.Instance.GetLevelsData().GetLevel(index);
             rows = levelMatrix.GetLength(0);
             cols = levelMatrix.GetLength(1);
-            BuildLevel();
+
+            for (int i = 0; i < _platformItems.Count; i++)
+            {
+                Destroy( _platformItems[i] );
+            }
+            //BuildLevel();
         }
 
         public void BuildLevel()

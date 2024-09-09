@@ -12,7 +12,7 @@ namespace SekiburaGames.Arkanoid.System
         void Start()
         {
             stateMachine = SystemManager.Get<GameStateMachine>(); 
-            stateMachine.ChangeState(new ResetState(stateMachine));
+            stateMachine.ChangeState(new MainMenuState(stateMachine));
         }
 
         void Update()

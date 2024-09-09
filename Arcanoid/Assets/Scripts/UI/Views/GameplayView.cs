@@ -21,7 +21,7 @@ namespace SekiburaGames.Arkanoid.UI
 
         private void OnPauseButtonPressed()
         {
-            ViewManager.Show<PauseView>();
+//            ViewManager.Show<PauseView>();
             _gameStateMachine.ChangeState(new PauseState(_gameStateMachine));
         }
 
