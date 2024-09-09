@@ -8,18 +8,22 @@ namespace SekiburaGames.Arkanoid.System
 {
     public class ResetState : GameState
     {
+        private GameStateMachine _gameStateMachine;
         private InputController _inputController;
         private ScoreController _scoreController;
         private LifesController _lifesController;
         private PlayerMovement _playerMovement;
         private BallController _ballController;
+        private LevelManager _levelManager;
         public ResetState(GameStateMachine stateMachine) : base(stateMachine)
         {
             SystemManager.Get(out _inputController);
             SystemManager.Get(out _scoreController);
             SystemManager.Get(out _lifesController);
+            SystemManager.Get(out _gameStateMachine);
             _ballController = MonobehReferencesManager.Instance.FindByType<BallController>();
             _playerMovement = MonobehReferencesManager.Instance.FindByType<PlayerMovement>();
+            _levelManager= MonobehReferencesManager.Instance.FindByType<LevelManager>();
         }
 
         public override void Enter()
@@ -29,12 +33,12 @@ namespace SekiburaGames.Arkanoid.System
             _inputController.PlayGamePerformed += PlayGameButtonPressed;
 
 
-            if(_lifesController.Lifes <= 0)
+            if(_lifesController.Lifes <= 0 || _gameStateMachine.IsLastState<YouWinState>())
             {
                 _scoreController.ResetScoreValue();
                 _lifesController.ResetLifesValue();
                 //TODO
-                //_levelConntroller.ResetPlatforms;
+                _levelManager.BuildLevel();
             }
                 
 

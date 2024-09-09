@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace StarGames.Digger.System
+namespace SekiburaGames.Arkanoid.System
 {
     public class ScriptablObjectController : MonoBehaviour
     {

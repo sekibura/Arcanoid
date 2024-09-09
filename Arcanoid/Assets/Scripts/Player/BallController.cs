@@ -22,6 +22,7 @@ namespace SekiburaGames.Arkanoid.Gameplay
         private Renderer _playerRenderer;
         private GameStateMachine _stateMachine;
         private Vector3 _collPos;
+        private Vector2 _lastVelocity;
 
         void Start()
         {
@@ -155,5 +156,15 @@ namespace SekiburaGames.Arkanoid.Gameplay
         }
 
 
+        public void StopMovement()
+        {
+            _lastVelocity = _rigidbody2D.velocity;
+            _rigidbody2D.velocity = Vector2.zero;
+        }
+
+        public void ContinueMovement()
+        {
+            _rigidbody2D.velocity = _lastVelocity;
+        }
     }
 }

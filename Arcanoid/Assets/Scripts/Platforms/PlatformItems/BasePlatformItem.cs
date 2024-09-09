@@ -18,6 +18,7 @@ namespace SekiburaGames.Arkanoid.Gameplay
 
         public Action<int> PlatformHitsUpdated;
         public Action<int> PlatformGetDamage;
+        public Action<BasePlatformItem> PlatformDestroyedEvent;
 
         private ScoreController _scoreController;
         public virtual void ApplyDamage(int damage) 
@@ -34,6 +35,7 @@ namespace SekiburaGames.Arkanoid.Gameplay
         {
             Debug.Log($"[Platform {gameObject.name}] - Was destroyed!");
             _scoreController.UpdateScore(_score);
+            PlatformDestroyedEvent?.Invoke(this);
             gameObject.SetActive(false);
         }
     }

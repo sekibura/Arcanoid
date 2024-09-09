@@ -1,14 +1,17 @@
 using SekiburaGames.Arkanoid.Gameplay;
+using SekiburaGames.Arkanoid.System;
+using SekiburaGames.Arkanoid.UI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace SekiburaGames.Arkanoid.System
 {
-    public class PauseState : GameState
+    //Состояние когда все платформы уничтожены
+    public class YouWinState : GameState
     {
         private BallController _ballController;
-        public PauseState(GameStateMachine stateMachine) : base(stateMachine)
+        public YouWinState(GameStateMachine stateMachine) : base(stateMachine)
         {
             _ballController = MonobehReferencesManager.Instance.FindByType<BallController>();
         }
@@ -17,6 +20,8 @@ namespace SekiburaGames.Arkanoid.System
         {
             base.Enter();
             _ballController.StopMovement();
+            ViewManager.Show<GameWinView>();
+
         }
     }
 }

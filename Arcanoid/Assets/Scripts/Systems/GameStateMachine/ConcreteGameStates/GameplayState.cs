@@ -9,15 +9,18 @@ namespace SekiburaGames.Arkanoid.System
     public class GameplayState : GameState
     {
         private BallController _ballController;
+        private GameStateMachine _gameStateMachine;
         public GameplayState(GameStateMachine stateMachine) : base(stateMachine)
         {
+            SystemManager.Get(out _gameStateMachine);
             _ballController = MonobehReferencesManager.Instance.FindByType<BallController>();
         }
 
         public override void Enter()
         {
             //Debug.Log("Entered Gameplay State");
-            //_ballController.PushBall();
+            if(_gameStateMachine.IsLastState<PauseState>())
+                _ballController.ContinueMovement();
         }
 
         public override void Update()

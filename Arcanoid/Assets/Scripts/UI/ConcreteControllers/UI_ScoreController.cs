@@ -18,6 +18,7 @@ namespace SekiburaGames.Arkanoid.UI
             SystemManager.Get(out _scoreController);
             _scoreController.ScoreUpdatedEvent += OnScoreUpdated;
             OnScoreUpdated(_scoreController.Score);
+            LeanLocalization.OnLocalizationChanged += ()=> OnScoreUpdated(_scoreController.Score);
         }
 
         private void OnScoreUpdated(int value)
