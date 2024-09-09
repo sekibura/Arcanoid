@@ -20,9 +20,15 @@ namespace SekiburaGames.Arkanoid.Gameplay
         [SerializeField]
         private float _spacing = 0.1f; // расстояние между платформами
 
+        [SerializeField]
+        private Renderer _leftBound;
+        [SerializeField]
+        private Renderer _rightBound;
+
         void Start()
         {
             SystemManager.Get(out _gameStateMachine);
+            ResetBounds();
         }
 
         public void LoadLevel(int index)
@@ -34,8 +40,6 @@ namespace SekiburaGames.Arkanoid.Gameplay
        
             //BuildLevel();
         }
-
-
 
         public void BuildLevel()
         {
@@ -86,6 +90,18 @@ namespace SekiburaGames.Arkanoid.Gameplay
                 //Все платформы разрушены, вы победили ура.
                 _gameStateMachine.ChangeState(new YouWinState(_gameStateMachine));
             }
+        }
+        
+        private void ResetBounds()
+        {
+            float screenWidth = Camera.main.orthographicSize * 2 * Camera.main.aspect;
+            float screenHeight = Camera.main.orthographicSize * 2;
+            float X = -screenWidth/2 - _leftBound.bounds.size.x/2;
+            _leftBound.gameObject.transform.position = new Vector3(X, 0, 0);
+            _rightBound.gameObject.transform.position = new Vector3(-X, 0, 0);
+
+            
+
         }
     }
 }
