@@ -38,7 +38,7 @@ namespace SekiburaGames.Arkanoid.UI
             base.Initialize();
             SystemManager.Get(out _gameStateMachine);
             _sliderEffects.onValueChanged.AddListener((value) => OnSoundEffectsSliderChange(value));
-            _sliderMusic.onValueChanged.AddListener((value) => OnMusicSliderChange(value));
+            _sliderMusic.onValueChanged.AddListener((value) => OnMusicSliderChange(value)); 
             _helpBtn.onClick.AddListener(() => _helpView.SetActive(true));
             _mainMenuScene.onClick.AddListener(() => _gameStateMachine.ChangeState(new MainMenuState(_gameStateMachine)));
             _resumeBtn.onClick.AddListener(() => OnResumeButtonPressed());

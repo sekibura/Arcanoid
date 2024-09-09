@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 namespace SekiburaGames.Arkanoid.UI
@@ -54,12 +55,14 @@ namespace SekiburaGames.Arkanoid.UI
             _homeBtnLvls.onClick.AddListener(() => { ResetContainers(); });
             _settingsHomeBtnLvls.onClick.AddListener(() => { ResetContainers(); });
             InitLevelsContainer();
+            InitSettingsContent();
         }
         private void ResetContainers()
         {
             _levelsContainer.SetActive(false);
             _settingsContainer.SetActive(false);
         }
+
 
         #region lvls
 
@@ -108,6 +111,46 @@ namespace SekiburaGames.Arkanoid.UI
         {
             base.Show(parameter);
             ResetContainers();
+            SettingsShow();
         }
+
+        #region Settings
+        [SerializeField]
+        private Slider _sliderMusic;
+        [SerializeField]
+        private Slider _sliderEffects;
+        [SerializeField]
+        private UI_LanguageChooseController _languageChooseController;
+        [SerializeField]
+        private AudioMixerGroup _audioMixer;
+        private bool _isSetSliderValues = false;
+
+
+        private void InitSettingsContent()
+        {
+            _sliderEffects.onValueChanged.AddListener((value) => OnSoundEffectsSliderChange(value));
+            _sliderMusic.onValueChanged.AddListener((value) => OnMusicSliderChange(value));
+
+        }
+
+        private void SettingsShow()
+        {
+            _languageChooseController.UpdateButtonStates();
+        }
+        private void OnSoundEffectsSliderChange(float value)
+        {
+            //if (_isSetSliderValues)
+            //    return;
+            Debug.Log($"OnSoundEffectsSliderChange {value}");
+            _audioMixer.audioMixer.SetFloat("Effects", Mathf.Log10(value) * 20);
+        }
+
+        private void OnMusicSliderChange(float value)
+        {
+            //if (_isSetSliderValues)
+            //    return;
+            _audioMixer.audioMixer.SetFloat("BackgroundMusic", Mathf.Log10(value) * 20);
+        }
+        #endregion
     }
 }
