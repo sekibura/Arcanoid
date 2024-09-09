@@ -31,15 +31,20 @@ namespace SekiburaGames.Arkanoid.Gameplay
             rows = levelMatrix.GetLength(0);
             cols = levelMatrix.GetLength(1);
 
-            for (int i = 0; i < _platformItems.Count; i++)
-            {
-                Destroy( _platformItems[i] );
-            }
+       
             //BuildLevel();
         }
 
+
+
         public void BuildLevel()
         {
+            for (int i = 0; i < _platformItems.Count; i++)
+            {
+                Destroy(_platformItems[i].gameObject);
+            }
+            _platformItems.Clear();
+
             // Вычисляем ширину платформы, чтобы они помещались в экран
             float screenWidth = Camera.main.orthographicSize * 2 * Camera.main.aspect;
             float screenHeight = Camera.main.orthographicSize * 2;
