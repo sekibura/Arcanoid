@@ -20,6 +20,9 @@ namespace SekiburaGames.Arkanoid.UI
         [SerializeField]
         private GameObject _settingsContainer;
 
+        [SerializeField]
+        private Button _exitBtn;
+
         [Header("Levels Container")]
         [SerializeField]
         private Button _homeBtnLvls;
@@ -27,6 +30,7 @@ namespace SekiburaGames.Arkanoid.UI
         [Header("SettingsnnContainer")]
         [SerializeField]
         private Button _settingsHomeBtnLvls;
+
         public override void Initialize()
         {
             base.Initialize();
@@ -40,6 +44,11 @@ namespace SekiburaGames.Arkanoid.UI
             _settingsBtn.onClick.AddListener(() =>
             {
                 _settingsContainer.SetActive(true);
+            });
+
+            _exitBtn.onClick.AddListener(() =>
+            {
+                Application.Quit();
             });
 
             _homeBtnLvls.onClick.AddListener(() => { ResetContainers(); });
