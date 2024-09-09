@@ -1,5 +1,6 @@
 using SekiburaGames.Arkanoid.Audio;
 using SekiburaGames.Arkanoid.System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -45,7 +46,7 @@ namespace SekiburaGames.Arkanoid.Gameplay
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            //Debug.Log($"[BallController]: {collision.transform.tag.ToString()}");
+            Debug.Log($"[BallController]: {collision.transform.tag.ToString()} Velocity:{_rigidbody2D.velocity.ToString()}");
             if (collision.transform.CompareTag("Platform"))
             {
 
@@ -53,6 +54,7 @@ namespace SekiburaGames.Arkanoid.Gameplay
                 if (platform != null)
                     platform.ApplyDamage(_damage);
                 SoundManager.instance.PlaySound(SoundManager.Sound.Hurt);
+                CheckVelocity();
             }
             else if (collision.transform.CompareTag("Player"))
             {
@@ -65,7 +67,14 @@ namespace SekiburaGames.Arkanoid.Gameplay
             {
                 SoundManager.instance.PlaySound(SoundManager.Sound.Tap);
             }
+        }
 
+        private void CheckVelocity()
+        {
+            if (Mathf.Abs(_rigidbody2D.velocity.y) < 5)
+            {
+                _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, _rigidbody2D.velocity.y * 2);
+            }
         }
 
         //Платформа поделена на 3 части:
@@ -76,10 +85,14 @@ namespace SekiburaGames.Arkanoid.Gameplay
         {
             Vector2 newVelocity = Vector3.zero;
             float leftPointX = _playerRenderer.gameObject.transform.position.x - _playerRenderer.bounds.size.x / 2;
-            if(collisionPosition.x > leftPointX + ((_playerRenderer.bounds.size.x/3)*2))
+            float sideValue = UnityEngine.Random.Range(3, 7);
+            if (collisionPosition.x > leftPointX + ((_playerRenderer.bounds.size.x/3)*2))
             {
                 //правая часть
                 Debug.Log("[BallController]: Правая часть");
+                if (Mathf.Abs(_rigidbody2D.velocity.x) < 1)                    
+                    newVelocity = new Vector2(_rigidbody2D.velocity.x < 0 ? -sideValue : sideValue, _rigidbody2D.velocity.y);
+                else
                 newVelocity = new Vector2(_rigidbody2D.velocity.x < 0 ? -_rigidbody2D.velocity.x : _rigidbody2D.velocity.x, _rigidbody2D.velocity.y);
             }
             else if(collisionPosition.x > leftPointX + (_playerRenderer.bounds.size.x / 3))
@@ -92,7 +105,10 @@ namespace SekiburaGames.Arkanoid.Gameplay
             {
                 //лева часть
                 Debug.Log("[BallController]: Левая часть");
-                newVelocity = new Vector2(_rigidbody2D.velocity.x > 0 ? -_rigidbody2D.velocity.x : _rigidbody2D.velocity.x, _rigidbody2D.velocity.y);
+                if (Mathf.Abs(_rigidbody2D.velocity.x) < 1)
+                    newVelocity = new Vector2(_rigidbody2D.velocity.x > 0 ? -sideValue : sideValue, _rigidbody2D.velocity.y);
+                else
+                    newVelocity = new Vector2(_rigidbody2D.velocity.x > 0 ? -_rigidbody2D.velocity.x : _rigidbody2D.velocity.x, _rigidbody2D.velocity.y);
             }
 
             Debug.Log($"[BallController]: {collisionPosition.x} {leftPointX} {(_playerRenderer.bounds.size.x / 3)} {(_playerRenderer.bounds.size.x / 3)*2} {leftPointX + ((_playerRenderer.bounds.size.x / 3) * 2)}");
@@ -152,7 +168,8 @@ namespace SekiburaGames.Arkanoid.Gameplay
         {
             Debug.Log($"[BallController]: PushBall!");
             gameObject.transform.parent = null;
-            _rigidbody2D.AddForce(new Vector2(20, 20) * _pushForce);
+            float X = UnityEngine.Random.Range(-20, 20);
+            _rigidbody2D.AddForce(new Vector2(X, 20) * _pushForce);
         }
 
 
@@ -165,6 +182,11 @@ namespace SekiburaGames.Arkanoid.Gameplay
         public void ContinueMovement()
         {
             _rigidbody2D.velocity = _lastVelocity;
+        }
+
+        private void FixedUpdate()
+        {
+            CheckVelocity();
         }
     }
 }
